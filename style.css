@@ -179,14 +179,18 @@ textarea.contact-input {
 /* Profile Picture */
 
 .Aaryan {
-  width: 200px !important;
-  height: 200px !important;
-  object-fit: cover !important;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%; /* optional round look 😎 */
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.aaryan:hover {
+.Aaryan:hover {
   transform: scale(1.1);
-  box-shadow: 0 18px 45px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 18px 45px rgba(56, 189, 248, 0.25);
 }
 
 /* Highlight text */
