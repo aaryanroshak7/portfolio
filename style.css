@@ -178,11 +178,10 @@ textarea.contact-input {
 
 /* Profile Picture */
 
-.aaryan {
-  width: 200px;        /* size adjust cheyyam */
-  height: 200px;
-  object-fit: cover;   /* crop cheyyum neatly */
-  border-radius: 50%;  /* circle aakkan (optional 🔥) */
+.Aaryan {
+  width: 200px !important;
+  height: 200px !important;
+  object-fit: cover !important;
 }
 
 .aaryan:hover {
