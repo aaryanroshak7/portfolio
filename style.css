@@ -179,13 +179,10 @@ textarea.contact-input {
 /* Profile Picture */
 
 .aaryan {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 50%; /* optional round look 😎 */
-  display: block;
-  margin: 0 auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 200px !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
 }
 
 .aaryan:hover {
