@@ -6,15 +6,12 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve frontend files from public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-// PostgreSQL connection using DATABASE_URL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -22,7 +19,6 @@ const pool = new Pool({
   },
 });
 
-// Test DB connection
 pool.query("SELECT NOW()", (err, result) => {
   if (err) {
     console.error("PostgreSQL connection error:", err);
@@ -31,12 +27,10 @@ pool.query("SELECT NOW()", (err, result) => {
   }
 });
 
-// Root route - serve portfolio page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Contact form route
 app.post("/contact", async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -64,12 +58,6 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-// Optional: handle unknown routes
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
