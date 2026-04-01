@@ -1,37 +1,76 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("contact-form");
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const messageInput = document.getElementById("message");
+  const statusText = document.getElementById("form-status");
 
-const form = document.getElementById("contactForm");
+  // IMPORTANT:
+  // Ivide ninte Render backend URL kodukkanam
+  const API_URL = "https://portfolio-bxq5.onrender.com/contact";
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
+  if (!form) {
+    console.error("Form with id='contact-form' not found.");
+    return;
+  }
 
-  // Get values from the form
-  const name = form.elements[0].value;
-  const email = form.elements[1].value;
-  const message = form.elements[2].value;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const data = { name, email, message };
+    const name = nameInput ? nameInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const message = messageInput ? messageInput.value.trim() : "";
 
-  // Send data to the backend running on port 5000
-  fetch("http://localhost:5000/contact", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(async function (response) {
-    if (!response.ok) {
-      const err = await response.text();
-      throw new Error(err);
+    // Basic validation
+    if (!name || !email || !message) {
+      showStatus("Please fill all fields.", "red");
+      return;
     }
-    return response.json();
-  })
-  .then(function (result) {
-    alert("Message sent succesfully  ");
-    form.reset();
-  })
-  .catch(function (err) {
-    console.error(err);
-    alert("Error occurred ");
+
+    if (!isValidEmail(email)) {
+      showStatus("Please enter a valid email address.", "red");
+      return;
+    }
+
+    showStatus("Sending message...", "blue");
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showStatus(data.message || "Message sent successfully!", "green");
+        form.reset();
+      } else {
+        showStatus(data.message || "Failed to send message.", "red");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      showStatus("Server error. Please try again later.", "red");
+    }
   });
+
+  function showStatus(message, color) {
+    if (statusText) {
+      statusText.textContent = message;
+      statusText.style.color = color;
+    } else {
+      alert(message);
+    }
+  }
+
+  function isValidEmail(email) {
+    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+  }
 });
